@@ -6,7 +6,7 @@ import re
 from api import Invidious
 app = Flask(__name__)
 colorama.init()
-api_url = 'http://192.168.1.192/api/v2'
+api_url = 'http://{your ip goes here}/api/v2'
 invidious = Invidious()
         
 @app.route('/api/search', methods=['GET'])
@@ -19,16 +19,12 @@ def trends():
     query = request.args.get('type')
     format = request.args.get('format')
     platform = request.args.get('platform')
-    if platform == 'wii' and format == 'playlist':
-       return url.trends(query)
     return invidious.trends(query)
     
 @app.route('/api/popular', methods=['GET'])
 def popular():
     format = request.args.get('format')
     platform = request.args.get('platform')
-    if platform == 'wii' and format == 'playlist':
-       return url.popular()
     return invidious.popular()
 
 @app.route('/api/channels/<channel_id>/uploads', methods=['GET'])
@@ -104,28 +100,28 @@ def leanback_ajax():
         response = {
             'sets': [
                 {
-                    'gdata_url': 'http://192.168.1.192:443/api/trending',
-                    'thumbnail': 'http://192.168.1.192:443/api/thumbnails/trending',
+                    'gdata_url': 'http://{your ip goes here}:{port number}/api/trending',
+                    'thumbnail': 'http://{your ip goes here}:{port number}/api/thumbnails/trending',
                     'title': title_trends.get(lang)
                 },
                 {
-                    'gdata_url': 'http://192.168.1.192:443/api/trending?type=Music',
-                    'thumbnail': 'http://192.168.1.192:443/api/thumbnails/trending?type=Music',
+                    'gdata_url': 'http://{your ip goes here}:{port number}/api/trending?type=Music',
+                    'thumbnail': 'http://{your ip goes here}:{port number}/api/thumbnails/trending?type=Music',
                     'title': title_music.get(lang)
                 },
                 {
-                    'gdata_url': 'http://192.168.1.192:443/api/trending?type=Gaming',
-                    'thumbnail': 'http://192.168.1.192:443/api/thumbnails/trending?type=Gaming',
+                    'gdata_url': 'http://{your ip goes here}:{port number}/api/trending?type=Gaming',
+                    'thumbnail': 'http://{your ip goes here}:{port number}/api/thumbnails/trending?type=Gaming',
                     'title': title_gaming.get(lang)
                 },
                 {
-                    'gdata_url': 'http://192.168.1.192:443/api/trending?type=Movies',
-                    'thumbnail': 'http://192.168.1.192:443/api/thumbnails/trending?type=Movies',
+                    'gdata_url': 'http://{your ip goes here}:{port number}/api/trending?type=Movies',
+                    'thumbnail': 'http://{your ip goes here}:{port number}/api/thumbnails/trending?type=Movies',
                     'title': title_fa.get(lang)
                 },
                 {
-                    'gdata_url': 'http://192.168.1.192:443/api/popular',
-                    'thumbnail': 'http://192.168.1.192:443/api/thumbnails/popular',
+                    'gdata_url': 'http://{your ip goes here}:{port number}/api/popular',
+                    'thumbnail': 'http://{your ip goes here}:{port number}/api/thumbnails/popular',
                     'title': title_pop.get(lang)
                 }
             ]
@@ -138,9 +134,9 @@ def leanback_ajax():
     
 def fetch_and_serve_trending_thumbnail(type=None):
     if type:
-        feed_url = f"http://192.168.1.192:443/api/trending?type={type}"
+        feed_url = f"http://{your ip goes here}:{port number}/api/trending?type={type}"
     else:
-        feed_url = "http://192.168.1.192:443/api/trending"
+        feed_url = "http://{your ip goes here}:{port number}/api/trending"
 
     print('Downloading feed from:', feed_url)
 
@@ -167,7 +163,7 @@ def trending_thumbnail():
     return fetch_and_serve_trending_thumbnail(type)
     
 def fetch_and_serve_popular_thumbnail(type=None):
-    pop_url = "http://192.168.1.192:443/api/popular"
+    pop_url = "http://{your ip goes here}:{port number}/api/popular"
 
     print('Downloading feed from:', pop_url)
 
@@ -189,7 +185,7 @@ def fetch_and_serve_popular_thumbnail(type=None):
         return "Error processing feed data", 500
     
 def fetch_and_serve_channel_uploads_thumbnail(channel_id):
-    channel_uploads_url = f"http://192.168.1.192:443/api/channels/{channel_id}/uploads"
+    channel_uploads_url = f"http://{your ip goes here}:{port number}/api/channels/{channel_id}/uploads"
     print('Downloading feed from:', channel_uploads_url)
     try:
         response = requests.get(channel_uploads_url)
