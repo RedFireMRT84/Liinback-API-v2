@@ -88,20 +88,6 @@ class Invidious:
         else:
             error_message = {"error": "Invalid response format"}
             return jsonify(error_message), 500
-
-        
-    def playlist(self, playlist_id=None):
-        playlist_endpoint = "playlists"
-        response = requests.get(f"http://vid.puffyan.us/api/v1/{playlist_endpoint}/{playlist_id}")
-
-        if response.status_code == 200:
-            json_data = response.json()
-            videos = json_data.get("videos", [])
-            xml_data = self.generateXML(videos)
-            return Response(xml_data, mimetype='text/atom+xml')
-        else:
-            error_message = {"error": "Invalid response format"}
-            return jsonify(error_message), 500
         
     @staticmethod
     def escape_xml(s):
